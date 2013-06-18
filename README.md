@@ -1,4 +1,4 @@
-ogrTools
+OGR Tools
 ========
 
 The code in this repo is intended to demonstrate how one could utilize the OGR (vector) library within GDAL 
