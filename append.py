@@ -6,7 +6,7 @@ import sys, subprocess
 
 #syntax for ogr2ogr w/ append: ogr2ogr -f "output format" -append outputDS inputDS
 
-def append(f1,f2):
+def append(f1,f2,fileType):
     
-   noExt = f1[:-4]
-    subprocess.call(["ogr2ogr","-f","GeoJSON","-append","-nln",noExt,f1,f2,"-update"])
+    noExt = f1[:-4]
+    subprocess.call(["ogr2ogr","-f",fileType,"-append","-nln",noExt,f1,f2,"-update"])
