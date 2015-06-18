@@ -13,7 +13,7 @@ def bufferCalculation(InputFileName,buf):
 
     OutputFileName = "buffer_" + InputFileName
     
-    driver = ogr.GetDriverByName('GeoJSON')
+    driver = ogr.GetDriverByName('ESRI Shapefile')
     inputDS = driver.Open(InputFileName, 0)
     if inputDS is None:
         print 'Could not open input file',InputFileName
