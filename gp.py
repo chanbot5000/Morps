@@ -10,7 +10,7 @@ driverList = {"shp":"ESRI Shapefile","json":"GeoJSON","kml":"KML"}
 ### This function appends the data from one file to another. It takes three
 ### arguments, f1 and f2, which should be the files used for appending, and 
 ### fileType, which should be the type of the files being processed (e.g., 'shp').
-def append(f1,f2,fileType):
+def append(f1,f2,fileType="shp"):
     
     noExt = f1[:-4]
     subprocess.call(["ogr2ogr","-f",driverList[fileType],"-append","-nln",noExt,f1,f2,"-update"])
@@ -20,7 +20,7 @@ def append(f1,f2,fileType):
 ### to create a buffer, OutFileName, which is the output file name, buf,
 ### which is specifying the size of the buffer, and fileType, which should be
 ### the type of the file being processed.
-def buffer(InputFileName,OutFileName,buf,fileType):
+def buffer(InputFileName,OutFileName,buf,fileType="shp"):
 
     OutputFileName = OutFileName
     
@@ -76,7 +76,7 @@ def buffer(InputFileName,OutFileName,buf,fileType):
 ### It takes three arguments- inputFile, for the file with which
 ### to derive the centroids; outFile, which is the name of the new centroid
 ### file, and fileType, which is the type of file being passed (e.g., 'shp')
-def centroid(inputFile, outFile, fileType):
+def centroid(inputFile, outFile, fileType="shp"):
 
     outputFileName = outFile
 
@@ -131,7 +131,7 @@ def centroid(inputFile, outFile, fileType):
 ### It takes 4 arguments, f1 for the first file, fid1 for the index of the
 ### first file's feature, f2 for the second file, fid2 for the index of the
 ### second file's feature. Returns whether the containment is True or False.
-def contains(f1,fid1,f2,fid2,fileType):
+def contains(f1,fid1,f2,fid2,fileType="shp"):
     driver = ogr.GetDriverByName(driverList[fileType])
     
     file1 = driver.Open(f1,0)
@@ -149,7 +149,7 @@ def contains(f1,fid1,f2,fid2,fileType):
     else:
         print "CONTAINMENT IS FALSE"
 
-def difference(f1,f2,outFile, fileType):
+def difference(f1,f2,outFile, fileType="shp"):
     outputFileName = outFile
     
     driver = ogr.GetDriverByName(driverList[fileType])
@@ -237,7 +237,7 @@ def difference(f1,f2,outFile, fileType):
 ### It takes 4 arguments, f1 for the first file, fid1 for the index of the
 ### first file's feature, f2 for the second file, fid2 for the index of the
 ### second file's feature. Returns whether touch is True or False.
-def disjoint(f1,fid1,f2,fid2, fileType):
+def disjoint(f1,fid1,f2,fid2, fileType="shp"):
     driver = ogr.GetDriverByName(driverList[fileType])
     
     file1 = driver.Open(f1,0)
@@ -259,7 +259,7 @@ def disjoint(f1,fid1,f2,fid2, fileType):
 ### It takes 4 arguments, f1 for the first file, fid1 for the index of the
 ### first file's geometry, f2 for the second file, fid2 for the index of the
 ### second file's geometry.
-def distance(f1,fid1,f2,fid2, fileType):
+def distance(f1,fid1,f2,fid2, fileType="shp"):
     driver = ogr.GetDriverByName(driverList[fileType])
     
     file1 = driver.Open(f1,0)
@@ -279,7 +279,7 @@ def distance(f1,fid1,f2,fid2, fileType):
 ### first file's geometry, f2 for the second file, fid2 for the index of the
 ### second file's geometry. Returns a boolean depending on whether the geometries 
 ### are equal.
-def equals(f1,fid1,f2,fid2, fileType):
+def equals(f1,fid1,f2,fid2, fileType="shp"):
     driver = ogr.GetDriverByName(driverList[fileType])
     
     file1 = driver.Open(f1,0)
@@ -299,7 +299,7 @@ def equals(f1,fid1,f2,fid2, fileType):
 
 ### This returns the bounding envelope for a specific geometry. See layerExtent.py
 ### to get the entire extent of a layer
-def getEnvelope(inFile,g,fileType): #inFile = file, g = geometry
+def getEnvelope(inFile,g,fileType="shp"): #inFile = file, g = geometry
     driver = ogr.GetDriverByName(driverList[fileType])
     f = driver.Open(inFile,0)
     layer = f.GetLayer()
@@ -324,7 +324,7 @@ def getEnvelope(inFile,g,fileType): #inFile = file, g = geometry
 ### This program returns all fields within a specific file. It takes one
 ### argument, f, for the name of the file with which the fields are desired
 ### to be known.
-def getFields(f,fileType):
+def getFields(f,fileType="shp"):
 
     driver = ogr.GetDriverByName(driverList[fileType])
     inFile = driver.Open(f,0)
@@ -354,7 +354,7 @@ def getFields(f,fileType):
 ### It takes 4 arguments, f1 for the first file, fid1 for the index of the
 ### first file's feature, f2 for the second file, fid2 for the index of the
 ### second file's feature. Returns whether the intersection is True or False.
-def intersect(f1,fid1,f2,fid2,fileType):
+def intersect(f1,fid1,f2,fid2,fileType="shp"):
     driver = ogr.GetDriverByName(driverList[fileType])
     
     file1 = driver.Open(f1,0)
@@ -374,14 +374,14 @@ def intersect(f1,fid1,f2,fid2,fileType):
 
 ### This returns the extent of the entire layer. See getEnvelope.py
 ### to get the bounding envelope for specific geometries
-def layerExtent(f,fileType):
+def layerExtent(f,fileType="shp"):
     driver = ogr.GetDriverByName(driverList[fileType])
     f = driver.Open(f,0)
     layer = f.GetLayer()
     extent = layer.GetExtent()
     return extent
 
-def simplify(infile,outFile,tolerance, fileType):
+def simplify(infile,outFile,tolerance, fileType="shp"):
     
     outFileName = outFile
     
@@ -440,7 +440,7 @@ def simplify(infile,outFile,tolerance, fileType):
     infile.Destroy()
     output.Destroy()
 
-def symmetricDifference(f1,f2,outFile,fileType):
+def symmetricDifference(f1,f2,outFile,fileType="shp"):
     outputFileName = outFile
     
     driver = ogr.GetDriverByName(driverList[fileType])
@@ -528,7 +528,7 @@ def symmetricDifference(f1,f2,outFile,fileType):
 ### field. It takes two arguments, 'f' for the filename (including extension)
 ### and 'field' for the desired field. Both arguments passed to the function
 ### should be strings.
-def uniqueValues(f,field,fileType):
+def uniqueValues(f,field,fileType="shp"):
     driver = ogr.GetDriverByName(driverList[fileType])
     inFile = driver.Open(f,0)
     layer = inFile.GetLayer()
@@ -554,7 +554,7 @@ def uniqueValues(f,field,fileType):
 ### It takes 4 arguments, f1 for the first file, fid1 for the index of the
 ### first file's feature, f2 for the second file, fid2 for the index of the
 ### second file's feature. Returns whether the within is True or False.
-def within(f1,fid1,f2,fid2, fileType):
+def within(f1,fid1,f2,fid2, fileType="shp"):
     driver = ogr.GetDriverByName(driverList[fileType])
     
     file1 = driver.Open(f1,0)
