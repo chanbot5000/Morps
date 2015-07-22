@@ -29,7 +29,6 @@ def buffer(InputFileName,OutFileName,buf,fileType="shp"):
     inputDS = driver.Open(InputFileName, 0)
     if inputDS is None:
         print 'Could not open input file',InputFileName
-        sys.exit(1)
 
     inputLayer = inputDS.GetLayer()
 
@@ -39,12 +38,10 @@ def buffer(InputFileName,OutFileName,buf,fileType="shp"):
         outputDS = driver.CreateDataSource(OutputFileName)
     except:
         print 'Could not create output file',OutputFileName
-        sys.exit(1)
 
     newLayer = outputDS.CreateLayer('TestBuffer', geom_type=ogr.wkbPolygon,srs=inputLayer.GetSpatialRef())
     if newLayer is None:
         print "couldn't create layer for buffer in output DS"
-        sys.exit(1)
 
     newLayerDef = newLayer.GetLayerDefn()
     featureID = 0
