@@ -8,11 +8,11 @@ import sys, subprocess, os
 driverList = {"shp":"ESRI Shapefile","json":"GeoJSON","kml":"KML"}
 
 ### TO DO:
-### Test unique values function
 ### Create unit converter function
 ### Create feature count function
+### Retain attribute information when creating new files
 
-def unit_converter():
+def unitConverter():
 
     #convert units from input coordinate systems into user specified units
     #such as Miles, Feet, Degrees, etc
@@ -22,11 +22,14 @@ def unit_converter():
 
     pass
 
-def feature_count():
+def featureCount(inputFile,fileType="shp"):
 
     #return the number of features in a dataset
+    driver = ogr.GetDriverByName(driverList[fileType])
+    inputDS = driver.Open(inputFile,0)
+    layer = inputDS.GetLayer()
 
-    pass
+    return layer.GetFeatureCount()
 
 
 ### This function creates a buffer for any file passed it, point, line, or
