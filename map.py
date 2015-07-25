@@ -10,10 +10,15 @@ driverList = {"shp":"ESRI Shapefile","json":"GeoJSON","kml":"KML"}
 ### This function appends the data from one file to another. It takes three
 ### arguments, f1 and f2, which should be the files used for appending, and 
 ### fileType, which should be the type of the files being processed (e.g., 'shp').
-def append(f1,f2,fileType="shp"):
+
+##
+## Removed append function because same thing can be done using ogr2ogr, and it was performing ogr2ogr calls anyways
+##
+
+# def append(f1,f2,fileType="shp"):
     
-    noExt = f1[:-4]
-    subprocess.call(["ogr2ogr","-f",driverList[fileType],"-append","-nln",noExt,f1,f2,"-update"])
+#     noExt = f1[:-4]
+#     subprocess.call(["ogr2ogr","-f",driverList[fileType],"-append","-nln",noExt,f1,f2,"-update"])
 
 ### This function creates a buffer for any file passed it, point, line, or
 ### polygon. It takes four arguments, InputFileName, for the file with which
@@ -24,7 +29,6 @@ def buffer(InputFileName,OutFileName,buf,fileType="shp"):
 
     OutputFileName = OutFileName
     
-    #driver = ogr.GetDriverByName('ESRI Shapefile')
     driver = ogr.GetDriverByName(driverList[fileType])
     inputDS = driver.Open(InputFileName, 0)
     if inputDS is None:
@@ -41,7 +45,7 @@ def buffer(InputFileName,OutFileName,buf,fileType="shp"):
 
     newLayer = outputDS.CreateLayer('TestBuffer', geom_type=ogr.wkbPolygon,srs=inputLayer.GetSpatialRef())
     if newLayer is None:
-        print "couldn't create layer for buffer in output DS"
+        print "Could not create layer for buffer in output data source"
 
     newLayerDef = newLayer.GetLayerDefn()
     featureID = 0
@@ -56,7 +60,7 @@ def buffer(InputFileName,OutFileName,buf,fileType="shp"):
             newFeature.SetFID(featureID)
             newLayer.CreateFeature(newFeature)
         except:
-            print "error adding buff"
+            print "Error adding buffer"
 
         newFeature.Destroy()
         oldFeature.Destroy()
@@ -64,7 +68,7 @@ def buffer(InputFileName,OutFileName,buf,fileType="shp"):
         featureID += 1
 
 
-    print 'There are ', featureID, ' input features'
+    print 'There are', featureID, 'input features'
 
     inputDS.Destroy()
     outputDS.Destroy()
@@ -82,9 +86,14 @@ def centroid(inputFile, outFile, fileType="shp"):
 
     if inputDS is None:
         print "Could not open input file", inputFile
-        sys.exit(1)
 
     layer = inputDS.GetLayer()
+
+    #test if input is point geometry
+    if layer.GetGeomType() == 1:
+
+        #exit the function! why are you getting centroids of points??
+        return "You submitted a point dataset. Please submit a dataset containing line or polygon geometries."
 
     #create output file
     if os.path.exists(outputFileName):
@@ -93,13 +102,11 @@ def centroid(inputFile, outFile, fileType="shp"):
         outputDS = driver.CreateDataSource(outputFileName)
     except:
         print 'Could not create output file', outputDS
-        sys.exit(1)
 
     newLayer = outputDS.CreateLayer('centroid',geom_type=ogr.wkbPoint,srs=layer.GetSpatialRef())
 
     if newLayer is None:
         print "Couldn't create layer for buffer in output DS"
-        sys.exit(1)
 
     newLayerDef = newLayer.GetLayerDefn()
     featureID = 0
@@ -125,10 +132,10 @@ def centroid(inputFile, outFile, fileType="shp"):
     outputDS.Destroy()
 
 ### This function checks two features in a file to see if one contains another.
-### It takes 4 arguments, f1 for the first file, fid1 for the index of the
-### first file's feature, f2 for the second file, fid2 for the index of the
+### It takes 4 arguments, f1 for the first file, fid1 for the objectID of the
+### first file's feature, f2 for the second file, fid2 for the objectID of the
 ### second file's feature. Returns whether the containment is True or False.
-def contains(f1,fid1,f2,fid2,fileType="shp"):
+def contains(f1,f2,fid1=0,fid2=0,fileType="shp"):
     driver = ogr.GetDriverByName(driverList[fileType])
     
     file1 = driver.Open(f1,0)
@@ -142,11 +149,11 @@ def contains(f1,fid1,f2,fid2,fileType="shp"):
     geom2 = feat2.GetGeometryRef()
 
     if geom1.Contains(geom2) == 1:
-        print "CONTAINMENT IS TRUE"
+        return True
     else:
-        print "CONTAINMENT IS FALSE"
+        return False
 
-def difference(f1,f2,outFile, fileType="shp"):
+def difference(f1,f2,outFile,fileType="shp"):
     outputFileName = outFile
     
     driver = ogr.GetDriverByName(driverList[fileType])
@@ -157,11 +164,10 @@ def difference(f1,f2,outFile, fileType="shp"):
 
     if f1 is None:
         print "Could not open file ", f1
-        sys.exit(1)
 
     f2 = driver.Open(f2,0)
     layer2 = f2.GetLayer()
-   # feature2 = layer2.GetNextFeature()
+    feature2 = layer2.GetNextFeature()
 
     if f2 is None:
         print "Could not open file ", f2
@@ -173,13 +179,11 @@ def difference(f1,f2,outFile, fileType="shp"):
         output = driver.CreateDataSource(outputFileName)
     except:
         print 'Could not create output datasource ', outputFileName
-        sys.exit(1)
 
     newLayer = output.CreateLayer('SymmetricDifference',geom_type=ogr.wkbPolygon,srs=layer1.GetSpatialRef())
 
     if newLayer is None:
         print "Could not create output layer"
-        sys.exit(1)
 
     newLayerDef = newLayer.GetLayerDefn()
     ##############################
@@ -215,7 +219,7 @@ def difference(f1,f2,outFile, fileType="shp"):
                 newFeature2 = ogr.Feature(newLayerDef)
                 newFeature2.SetGeometry(geom2)
                 newFeature2.SetFID(featureID)
-                newLayer.CreateFeature(newfeature2)
+                newLayer.CreateFeature(newFeature2)
                 featureID += 1
             
                 newFeature1.Destroy()
@@ -234,7 +238,7 @@ def difference(f1,f2,outFile, fileType="shp"):
 ### It takes 4 arguments, f1 for the first file, fid1 for the index of the
 ### first file's feature, f2 for the second file, fid2 for the index of the
 ### second file's feature. Returns whether touch is True or False.
-def disjoint(f1,fid1,f2,fid2, fileType="shp"):
+def disjoint(f1,f2,fid1=0,fid2=0, fileType="shp"):
     driver = ogr.GetDriverByName(driverList[fileType])
     
     file1 = driver.Open(f1,0)
