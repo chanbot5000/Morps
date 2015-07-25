@@ -6,6 +6,7 @@ Python should be simple. Writing ~50 lines of code to create one buffer is not s
 MORPS attempts to simplify geoprocessing with Python. Using the terminal/command line interface, navigate to the directory storing the morps.py file. 
 
 Type 
+    
     python 
 
 into the command and begin using morps:
