@@ -90,6 +90,12 @@ def centroid(inputFile, outFile, fileType="shp"):
 
     layer = inputDS.GetLayer()
 
+    #test if input is point geometry
+    if layer.GetGeomType() == 1:
+
+        #exit the function! why are you getting centroids of points??
+        return "You submitted a point dataset. Please submit a dataset containing line or polygon geometries."
+
     #create output file
     if os.path.exists(outputFileName):
         os.remove(outputFileName)
@@ -129,10 +135,10 @@ def centroid(inputFile, outFile, fileType="shp"):
     outputDS.Destroy()
 
 ### This function checks two features in a file to see if one contains another.
-### It takes 4 arguments, f1 for the first file, fid1 for the index of the
-### first file's feature, f2 for the second file, fid2 for the index of the
+### It takes 4 arguments, f1 for the first file, fid1 for the objectID of the
+### first file's feature, f2 for the second file, fid2 for the objectID of the
 ### second file's feature. Returns whether the containment is True or False.
-def contains(f1,fid1,f2,fid2,fileType="shp"):
+def contains(f1,f2,fid1=0,fid2=0,fileType="shp"):
     driver = ogr.GetDriverByName(driverList[fileType])
     
     file1 = driver.Open(f1,0)
