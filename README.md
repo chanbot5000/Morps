@@ -5,6 +5,13 @@ Python should be simple. Writing ~50 lines of code to create one buffer is not s
 
 MORPS attempts to simplify geoprocessing with Python.
 
+    cities = "cities.shp"
+	cities_buffered = "cities_buffered.shp"
+	unit = 'miles'
+	format = 'shp'
+
+	morps.buffer(cities,cities_buffered,500,unit,format)
+
 The code in this repo is also intended to demonstrate how one could utilize the OGR vector library within GDAL 
 for performing basic geoprocessing tasks.
 
