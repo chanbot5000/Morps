@@ -86,7 +86,6 @@ def centroid(inputFile, outFile, fileType="shp"):
 
     if inputDS is None:
         print "Could not open input file", inputFile
-        sys.exit(1)
 
     layer = inputDS.GetLayer()
 
@@ -103,13 +102,11 @@ def centroid(inputFile, outFile, fileType="shp"):
         outputDS = driver.CreateDataSource(outputFileName)
     except:
         print 'Could not create output file', outputDS
-        sys.exit(1)
 
     newLayer = outputDS.CreateLayer('centroid',geom_type=ogr.wkbPoint,srs=layer.GetSpatialRef())
 
     if newLayer is None:
         print "Couldn't create layer for buffer in output DS"
-        sys.exit(1)
 
     newLayerDef = newLayer.GetLayerDefn()
     featureID = 0
@@ -156,7 +153,7 @@ def contains(f1,f2,fid1=0,fid2=0,fileType="shp"):
     else:
         return False
 
-def difference(f1,f2,outFile, fileType="shp"):
+def difference(f1,f2,outFile,fileType="shp"):
     outputFileName = outFile
     
     driver = ogr.GetDriverByName(driverList[fileType])
@@ -167,11 +164,10 @@ def difference(f1,f2,outFile, fileType="shp"):
 
     if f1 is None:
         print "Could not open file ", f1
-        sys.exit(1)
 
     f2 = driver.Open(f2,0)
     layer2 = f2.GetLayer()
-   # feature2 = layer2.GetNextFeature()
+    feature2 = layer2.GetNextFeature()
 
     if f2 is None:
         print "Could not open file ", f2
@@ -183,13 +179,11 @@ def difference(f1,f2,outFile, fileType="shp"):
         output = driver.CreateDataSource(outputFileName)
     except:
         print 'Could not create output datasource ', outputFileName
-        sys.exit(1)
 
     newLayer = output.CreateLayer('SymmetricDifference',geom_type=ogr.wkbPolygon,srs=layer1.GetSpatialRef())
 
     if newLayer is None:
         print "Could not create output layer"
-        sys.exit(1)
 
     newLayerDef = newLayer.GetLayerDefn()
     ##############################
@@ -225,7 +219,7 @@ def difference(f1,f2,outFile, fileType="shp"):
                 newFeature2 = ogr.Feature(newLayerDef)
                 newFeature2.SetGeometry(geom2)
                 newFeature2.SetFID(featureID)
-                newLayer.CreateFeature(newfeature2)
+                newLayer.CreateFeature(newFeature2)
                 featureID += 1
             
                 newFeature1.Destroy()
@@ -244,7 +238,7 @@ def difference(f1,f2,outFile, fileType="shp"):
 ### It takes 4 arguments, f1 for the first file, fid1 for the index of the
 ### first file's feature, f2 for the second file, fid2 for the index of the
 ### second file's feature. Returns whether touch is True or False.
-def disjoint(f1,fid1,f2,fid2, fileType="shp"):
+def disjoint(f1,f2,fid1=0,fid2=0, fileType="shp"):
     driver = ogr.GetDriverByName(driverList[fileType])
     
     file1 = driver.Open(f1,0)
