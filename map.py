@@ -10,10 +10,15 @@ driverList = {"shp":"ESRI Shapefile","json":"GeoJSON","kml":"KML"}
 ### This function appends the data from one file to another. It takes three
 ### arguments, f1 and f2, which should be the files used for appending, and 
 ### fileType, which should be the type of the files being processed (e.g., 'shp').
-def append(f1,f2,fileType="shp"):
+
+##
+## Removed append function because same thing can be done using ogr2ogr, and it was performing ogr2ogr calls anyways
+##
+
+# def append(f1,f2,fileType="shp"):
     
-    noExt = f1[:-4]
-    subprocess.call(["ogr2ogr","-f",driverList[fileType],"-append","-nln",noExt,f1,f2,"-update"])
+#     noExt = f1[:-4]
+#     subprocess.call(["ogr2ogr","-f",driverList[fileType],"-append","-nln",noExt,f1,f2,"-update"])
 
 ### This function creates a buffer for any file passed it, point, line, or
 ### polygon. It takes four arguments, InputFileName, for the file with which
@@ -24,7 +29,6 @@ def buffer(InputFileName,OutFileName,buf,fileType="shp"):
 
     OutputFileName = OutFileName
     
-    #driver = ogr.GetDriverByName('ESRI Shapefile')
     driver = ogr.GetDriverByName(driverList[fileType])
     inputDS = driver.Open(InputFileName, 0)
     if inputDS is None:
@@ -41,7 +45,7 @@ def buffer(InputFileName,OutFileName,buf,fileType="shp"):
 
     newLayer = outputDS.CreateLayer('TestBuffer', geom_type=ogr.wkbPolygon,srs=inputLayer.GetSpatialRef())
     if newLayer is None:
-        print "couldn't create layer for buffer in output DS"
+        print "Could not create layer for buffer in output data source"
 
     newLayerDef = newLayer.GetLayerDefn()
     featureID = 0
@@ -56,7 +60,7 @@ def buffer(InputFileName,OutFileName,buf,fileType="shp"):
             newFeature.SetFID(featureID)
             newLayer.CreateFeature(newFeature)
         except:
-            print "error adding buff"
+            print "Error adding buffer"
 
         newFeature.Destroy()
         oldFeature.Destroy()
@@ -64,7 +68,7 @@ def buffer(InputFileName,OutFileName,buf,fileType="shp"):
         featureID += 1
 
 
-    print 'There are ', featureID, ' input features'
+    print 'There are', featureID, 'input features'
 
     inputDS.Destroy()
     outputDS.Destroy()
