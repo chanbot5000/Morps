@@ -1,9 +1,12 @@
 Map.py
 ========
 
-The code in this repo is intended to demonstrate how one could utilize the OGR (vector) library within GDAL 
-for performing basic geoprocessing tasks. It serves merely as an example to help others learn the 
-GDAL library, for which instructional resources for beginners are scarce, and is by no means exhaustive.
+Python should be simple. Writing ~50 lines of code to create one buffer is not simple. 
+
+Map.py attempts to simplify the process of geoprocessing with Python.
+
+The code in this repo is also intended to demonstrate how one could utilize the OGR vector library within GDAL 
+for performing basic geoprocessing tasks.
 
 
 Other useful online resources for GDAL:
