@@ -152,9 +152,9 @@ def contains(f1,f2,fid1=0,fid2=0,fileType="shp"):
     geom2 = feat2.GetGeometryRef()
 
     if geom1.Contains(geom2) == 1:
-        print "CONTAINMENT IS TRUE"
+        return True
     else:
-        print "CONTAINMENT IS FALSE"
+        return False
 
 def difference(f1,f2,outFile, fileType="shp"):
     outputFileName = outFile
