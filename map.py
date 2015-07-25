@@ -7,18 +7,27 @@ import sys, subprocess, os
 
 driverList = {"shp":"ESRI Shapefile","json":"GeoJSON","kml":"KML"}
 
-### This function appends the data from one file to another. It takes three
-### arguments, f1 and f2, which should be the files used for appending, and 
-### fileType, which should be the type of the files being processed (e.g., 'shp').
+### TO DO:
+### Test unique values function
+### Create unit converter function
+### Create feature count function
 
-##
-## Removed append function because same thing can be done using ogr2ogr, and it was performing ogr2ogr calls anyways
-##
+def unit_converter():
 
-# def append(f1,f2,fileType="shp"):
-    
-#     noExt = f1[:-4]
-#     subprocess.call(["ogr2ogr","-f",driverList[fileType],"-append","-nln",noExt,f1,f2,"-update"])
+    #convert units from input coordinate systems into user specified units
+    #such as Miles, Feet, Degrees, etc
+    #this function is needed so the operations are actually useful
+
+    #this will strengthen the buffer & distance function
+
+    pass
+
+def feature_count():
+
+    #return the number of features in a dataset
+
+    pass
+
 
 ### This function creates a buffer for any file passed it, point, line, or
 ### polygon. It takes four arguments, InputFileName, for the file with which
@@ -77,7 +86,7 @@ def buffer(InputFileName,OutFileName,buf,fileType="shp"):
 ### It takes three arguments- inputFile, for the file with which
 ### to derive the centroids; outFile, which is the name of the new centroid
 ### file, and fileType, which is the type of file being passed (e.g., 'shp')
-def centroid(inputFile, outFile, fileType="shp"):
+def centroid(inputFile,outFile,fileType="shp"):
 
     outputFileName = outFile
 
@@ -233,12 +242,14 @@ def difference(f1,f2,outFile,fileType="shp"):
         
     f1.Destroy()
     f2.Destroy()
+    print "Success"
+    return
 
 ### This function checks two features in a file to see if one touches another.
 ### It takes 4 arguments, f1 for the first file, fid1 for the index of the
 ### first file's feature, f2 for the second file, fid2 for the index of the
 ### second file's feature. Returns whether touch is True or False.
-def disjoint(f1,f2,fid1=0,fid2=0, fileType="shp"):
+def disjoint(f1,f2,fid1=0,fid2=0,fileType="shp"):
     driver = ogr.GetDriverByName(driverList[fileType])
     
     file1 = driver.Open(f1,0)
@@ -252,17 +263,15 @@ def disjoint(f1,f2,fid1=0,fid2=0, fileType="shp"):
     geom2 = feat2.GetGeometryRef()
 
     if geom1.Disjoint(geom2) == 0:
-        print f1 + "'s Feature", fid1, "is not Disjoint with", f2 + "'s Feature", fid2
         return False
     else:
-        print f1 + "'s Feature", fid1, "is disjoint with",f2 + "'s Feature", fid2
         return True
 
 ### This function returns the distance between two geometries.
 ### It takes 4 arguments, f1 for the first file, fid1 for the index of the
 ### first file's geometry, f2 for the second file, fid2 for the index of the
 ### second file's geometry.
-def distance(f1,f2,fid1=0,fid2=0, fileType="shp"):
+def distance(f1,f2,fid1=0,fid2=0,fileType="shp"):
     driver = ogr.GetDriverByName(driverList[fileType])
     
     file1 = driver.Open(f1,0)
@@ -286,7 +295,7 @@ def distance(f1,f2,fid1=0,fid2=0, fileType="shp"):
 ### first file's geometry, f2 for the second file, fid2 for the index of the
 ### second file's geometry. Returns a boolean depending on whether the geometries 
 ### are equal.
-def equals(f1,fid1,f2,fid2, fileType="shp"):
+def equals(f1,f2,fid1=0,fid2=0,fileType="shp"):
     driver = ogr.GetDriverByName(driverList[fileType])
     
     file1 = driver.Open(f1,0)
@@ -300,13 +309,13 @@ def equals(f1,fid1,f2,fid2, fileType="shp"):
     geom2 = feat2.GetGeometryRef()
 
     if geom1.Equals(geom2) == 1:
-        print "GEOMETRIES ARE EQUAL"
+        return True
     else:
-        print "GEOMETRIES ARE EQUAL"
+        return False
 
 ### This returns the bounding envelope for a specific geometry. See layerExtent.py
 ### to get the entire extent of a layer
-def getEnvelope(inFile,g,fileType="shp"): #inFile = file, g = geometry
+def getEnvelope(inFile,g=0,fileType="shp"): #inFile = file, g = geometry
     driver = ogr.GetDriverByName(driverList[fileType])
     f = driver.Open(inFile,0)
     layer = f.GetLayer()
@@ -315,7 +324,6 @@ def getEnvelope(inFile,g,fileType="shp"): #inFile = file, g = geometry
 
     if g > featCount:
         print "Feature ", g, "does not exist in", inFile
-        sys.exit(1)
 
     try:
         feature = layer.GetFeature(g)
@@ -326,7 +334,6 @@ def getEnvelope(inFile,g,fileType="shp"): #inFile = file, g = geometry
 
     except:
         print "Could not obtain envelope"
-        sys.exit(1)
 
 ### This program returns all fields within a specific file. It takes one
 ### argument, f, for the name of the file with which the fields are desired
@@ -338,7 +345,6 @@ def getFields(f,fileType="shp"):
 
     if inFile is None:
         print 'Could not open file', f, 'to read fields'
-        sys.exit(1)
 
     layer = inFile.GetLayer()
     feat = layer.GetNextFeature()
@@ -361,7 +367,7 @@ def getFields(f,fileType="shp"):
 ### It takes 4 arguments, f1 for the first file, fid1 for the index of the
 ### first file's feature, f2 for the second file, fid2 for the index of the
 ### second file's feature. Returns whether the intersection is True or False.
-def intersect(f1,fid1,f2,fid2,fileType="shp"):
+def intersect(f1,f2,fid1=0,fid2=0,fileType="shp"):
     driver = ogr.GetDriverByName(driverList[fileType])
     
     file1 = driver.Open(f1,0)
@@ -375,9 +381,9 @@ def intersect(f1,fid1,f2,fid2,fileType="shp"):
     geom2 = feat2.GetGeometryRef()
 
     if geom1.Intersect(geom2) == 1:
-        print "INTERSECTION IS TRUE"
+        return True
     else:
-        print "INTERSECTION IS FALSE"
+        return False
 
 ### This returns the extent of the entire layer. See getEnvelope.py
 ### to get the bounding envelope for specific geometries
@@ -388,6 +394,7 @@ def layerExtent(f,fileType="shp"):
     extent = layer.GetExtent()
     return extent
 
+###tolerance: the distance tolerance for the simplification
 def simplify(infile,outFile,tolerance, fileType="shp"):
     
     outFileName = outFile
@@ -446,6 +453,8 @@ def simplify(infile,outFile,tolerance, fileType="shp"):
 
     infile.Destroy()
     output.Destroy()
+    print "Success"
+    return
 
 def symmetricDifference(f1,f2,outFile,fileType="shp"):
     outputFileName = outFile
@@ -462,7 +471,7 @@ def symmetricDifference(f1,f2,outFile,fileType="shp"):
 
     f2 = driver.Open(f2,0)
     layer2 = f2.GetLayer()
-   # feature2 = layer2.GetNextFeature()
+    feature2 = layer2.GetNextFeature()
 
     if f2 is None:
         print "Could not open file ", f2
@@ -516,7 +525,7 @@ def symmetricDifference(f1,f2,outFile,fileType="shp"):
                 newFeature2 = ogr.Feature(newLayerDef)
                 newFeature2.SetGeometry(geom2)
                 newFeature2.SetFID(featureID)
-                newLayer.CreateFeature(newfeature2)
+                newLayer.CreateFeature(newFeature2)
                 featureID += 1
             
                 newFeature1.Destroy()
@@ -530,6 +539,8 @@ def symmetricDifference(f1,f2,outFile,fileType="shp"):
         
     f1.Destroy()
     f2.Destroy()
+    print "Success"
+    return
 
 ### This program returns a list of all unique values within a specified
 ### field. It takes two arguments, 'f' for the filename (including extension)
@@ -561,7 +572,7 @@ def uniqueValues(f,field,fileType="shp"):
 ### It takes 4 arguments, f1 for the first file, fid1 for the index of the
 ### first file's feature, f2 for the second file, fid2 for the index of the
 ### second file's feature. Returns whether the within is True or False.
-def within(f1,fid1,f2,fid2, fileType="shp"):
+def within(f1,f2,fid1=0,fid2=0, fileType="shp"):
     driver = ogr.GetDriverByName(driverList[fileType])
     
     file1 = driver.Open(f1,0)
@@ -575,6 +586,6 @@ def within(f1,fid1,f2,fid2, fileType="shp"):
     geom2 = feat2.GetGeometryRef()
 
     if geom1.Within(geom2) == 1:
-        print f1, "IS WITHIN", f2
+        return True
     else:
-        print f1, "IS NOT WITHIN", f2
+        return False
