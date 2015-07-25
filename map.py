@@ -252,15 +252,17 @@ def disjoint(f1,f2,fid1=0,fid2=0, fileType="shp"):
     geom2 = feat2.GetGeometryRef()
 
     if geom1.Disjoint(geom2) == 0:
-        print f1 + "'S FEATURE", fid1, "IS NOT DISJOINT WITH", f2 + "'S FEATURE", fid2
+        print f1 + "'s Feature", fid1, "is not Disjoint with", f2 + "'s Feature", fid2
+        return False
     else:
-        print f1 + "'S FEATURE", fid1, "IS DISJOINT WITH",f2 + "'S FEATURE", fid2
+        print f1 + "'s Feature", fid1, "is disjoint with",f2 + "'s Feature", fid2
+        return True
 
 ### This function returns the distance between two geometries.
 ### It takes 4 arguments, f1 for the first file, fid1 for the index of the
 ### first file's geometry, f2 for the second file, fid2 for the index of the
 ### second file's geometry.
-def distance(f1,fid1,f2,fid2, fileType="shp"):
+def distance(f1,f2,fid1=0,fid2=0, fileType="shp"):
     driver = ogr.GetDriverByName(driverList[fileType])
     
     file1 = driver.Open(f1,0)
@@ -273,7 +275,11 @@ def distance(f1,fid1,f2,fid2, fileType="shp"):
     feat2 = layer2.GetFeature(fid2)
     geom2 = feat2.GetGeometryRef()
 
-    return geom1.Distance(geom2)
+    if geom1.Distance(geom2) == -1:
+        print 'An error occurred when attempting to compute the Distance'
+        return geom1.Distance(geom2)
+    else:
+        return geom1.Distance(geom2)
 
 ### This function checks two features in a file to see their geometries are
 ### equal. It takes 4 arguments, f1 for the first file, fid1 for the index of the
