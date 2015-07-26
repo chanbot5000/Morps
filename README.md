@@ -13,8 +13,8 @@ as the command and begin using morps:
 
     import morps
 
-    cities = "cities.shp"
-	cities_buffered = "cities_buffered.shp"
+    cities = "data/cities.shp"
+	cities_buffered = "data/cities_buffered.shp"
 	unit = 'miles'
 	format = 'shp'
 
@@ -22,7 +22,7 @@ as the command and begin using morps:
 
 or even simpler:
 
-	morps.buffer("cities.shp","cities_buffered.shp","miles","shp")
+	morps.buffer("data/cities.shp","data/cities_buffered.shp","miles","shp")
 
 The code in this repo is also intended to demonstrate how one could utilize the OGR vector library within GDAL 
 for performing basic geoprocessing tasks.
