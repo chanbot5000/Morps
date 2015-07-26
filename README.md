@@ -9,7 +9,7 @@ Type
     
     python 
 
-as the command and begin using morps:
+to start the python shell and begin using morps:
 
     import morps
 
@@ -27,7 +27,7 @@ or even simpler:
 
 This library is built on top of GDAL, and is required to be installed in order for MORPS to work correctly. Find GDAL install instructions here- https://www.mapbox.com/tilemill/docs/guides/gdal/
 
-If you do not get errors when typing <b>import ogr</b> into Python, you know that Python is configured and you are ready to use morps.
+If you do not get errors when typing <b>import ogr</b> into the Python shell, you know that Python is configured and you are ready to use morps.
 
 The code in this repo is also intended to demonstrate how one could utilize the OGR vector library within GDAL 
 for performing basic geoprocessing tasks.
