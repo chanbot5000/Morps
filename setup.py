@@ -2,10 +2,10 @@ from distutils.core import setup
 
 setup(
     name='Morps',
-    version='0.1.3',
+    version='0.1.4',
     author='Chandler Sterling',
     author_email='chandlersterling1@gmail.com',
-    packages=['morps'],
+    py_modules=['morps'],
     url='http://pypi.python.org/pypi/morps/',
     license='LICENSE.txt',
     description='Modifying Objects to Reduce Python Scripting',
