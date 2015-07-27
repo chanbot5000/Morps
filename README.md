@@ -9,7 +9,7 @@ Type
     
     python 
 
-to start the python shell and begin using morps:
+to start the python shell and begin using morps
 
     import morps
 
@@ -20,7 +20,7 @@ to start the python shell and begin using morps:
 
 	morps.buffer(cities,cities_buffered,500,unit,format)
 
-or even simpler:
+or even simpler
 
 	morps.buffer("data/cities.shp","data/cities_buffered.shp","miles","shp")
 
