@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='Morps',
-    version='0.1.9',
+    version='0.1.4',
     author='Chandler Sterling',
     author_email='chandlersterling1@gmail.com',
     py_modules=['morps'],

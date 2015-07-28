@@ -11,7 +11,7 @@ Type
 
 to start the python shell and begin using morps
 
-    from morps import morps
+    import morps
 
     cities = "data/cities.shp"
 	cities_buffered = "data/cities_buffered.shp"
@@ -34,7 +34,7 @@ To install Morps, clone this repository or download the latest build from the [P
 
 If it installs with no errors, start the Python shell and attempt to import morps
 
-    from morps import morps
+    import morps
 
 All right, lets Merk some Morps!
 
