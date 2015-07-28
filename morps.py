@@ -11,9 +11,6 @@ driverList = {"shp":"ESRI Shapefile","json":"GeoJSON","kml":"KML"}
 ### Create unit converter function
 ### Create feature count function
 ### Retain attribute information when creating new files
-def test():
-    return "this is a test and it is working"
-
 
 def unitConverter():
 
