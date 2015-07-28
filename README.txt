@@ -1,4 +1,3 @@
-===========
 Morps - Modifying Objects to Reduce Python Scripting
 ===========
 
@@ -25,6 +24,5 @@ This library is built on top of GDAL, and is required to be installed in order f
 
 If you do not get errors when typing <b>import ogr</b> into the Python shell, you know that Python is configured and you are ready to use morps.
 
-The code in this repo is also intended to demonstrate how one could utilize the OGR vector library within GDAL 
-for performing basic geoprocessing tasks.
+Fork me on GitHub: https://github.com/csterling/Morps
 
