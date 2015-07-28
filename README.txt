@@ -7,7 +7,7 @@ Morps attempts to simplify geoprocessing with Python. Using the terminal/command
 
 to start the python shell and begin using morps::
 
-    import morps
+    from morps import morps
 
     cities = "data/cities.shp"
 	cities_buffered = "data/cities_buffered.shp"
