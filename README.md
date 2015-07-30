@@ -39,8 +39,7 @@ If it installs with no errors, start the Python shell and attempt to import morp
 All right, lets Merk some Morps!
 
 
-Geoprocessing Supported by Morps
-========
+Geoprocessing Supported by Morps:
 *Buffer
 *Contains
 *Difference
