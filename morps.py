@@ -11,16 +11,19 @@ driverList = {"shp":"ESRI Shapefile","json":"GeoJSON","kml":"KML"}
 ### Create unit converter function
 ### Create feature count function
 ### Retain attribute information when creating new files
+def tested():
+    return "this is a new test"
+
 
 def unitConverter():
 
     #convert units from input coordinate systems into user specified units
     #such as Miles, Feet, Degrees, etc
     #this function is needed so the operations are actually useful
-
+    return "unit conversion will occur someday"
     #this will strengthen the buffer & distance function
 
-    pass
+    #pass
 
 def featureCount(inputFile,fileType="shp"):
 
@@ -39,6 +42,9 @@ def featureCount(inputFile,fileType="shp"):
 ### the type of the file being processed.
 def buffer(InputFileName,OutFileName,buf,fileType="shp"):
 
+    #get fields from input file
+    inputFields = getFields(InputFileName,fileType)
+
     OutputFileName = OutFileName
     
     driver = ogr.GetDriverByName(driverList[fileType])
@@ -51,13 +57,26 @@ def buffer(InputFileName,OutFileName,buf,fileType="shp"):
     if os.path.exists(OutputFileName):
         os.remove(OutputFileName)
     try:
-        outputDS = driver.CreateDataSource(OutputFileName)
+        outputDS = driver.CreateDataSource(OutputFileName)  
     except:
         print 'Could not create output file',OutputFileName
 
-    newLayer = outputDS.CreateLayer('TestBuffer', geom_type=ogr.wkbPolygon,srs=inputLayer.GetSpatialRef())
+    newLayer = outputDS.CreateLayer(OutputFileName, geom_type=ogr.wkbPolygon,srs=inputLayer.GetSpatialRef())
     if newLayer is None:
         print "Could not create layer for buffer in output data source"
+
+    ##testing- add fields from input dataset to output dataset
+    try:        
+        for field in inputFields:
+            fieldDefinition = ogr.FieldDefn(field,inputFields[field])
+
+            #if field is type string
+            if inputFields[field] == 4:
+                fieldDefinition.setWidth(250)
+
+            newLayer.CreateField(fieldDefinition)
+    except:
+        print 'ur fuct'
 
     newLayerDef = newLayer.GetLayerDefn()
     featureID = 0
@@ -350,18 +369,17 @@ def getFields(f,fileType="shp"):
         print 'Could not open file', f, 'to read fields'
 
     layer = inFile.GetLayer()
-    feat = layer.GetNextFeature()
-    featDefn = feat.GetDefnRef()
-    
-    fieldCount = feat.GetFieldCount()
+    layerDefinition = layer.GetLayerDefn()
+
+    fieldList = {}
 
     try:
-        i = 0
-        while i < fieldCount:
-            fieldDefn = featDefn.GetFieldDefn(i)
-            fieldName = fieldDefn.GetNameRef()
-            print fieldName
-            i += 1
+        for i in range(layerDefinition.GetFieldCount()):
+            fieldName = layerDefinition.GetFieldDefn(i).GetName()
+            fieldTypeCode = layerDefinition.GetFieldDefn(i).GetType()
+            fieldList[fieldName] = fieldTypeCode
+
+        return fieldList
 
     except:
         print "Unable to read fields from", f
