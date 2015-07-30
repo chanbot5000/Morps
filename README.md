@@ -41,22 +41,22 @@ All right, lets Merk some Morps!
 
 Geoprocessing Supported by Morps:
 
-*Buffer
-*Contains
-*Difference
-*Disjoint
-*Distance
-*Equals
-*Find Centroid
-*Feature Count
-*Get Feature Envelope
-*Get Fields
-*Get Layer Extent
-*Get Unique Values
-*Intersect
-*Simplify
-*Symmetric Difference
-*Within
+* Buffer
+* Contains
+* Difference
+* Disjoint
+* Distance
+* Equals
+* Find Centroid
+* Feature Count
+* Get Feature Envelope
+* Get Fields
+* Get Layer Extent
+* Get Unique Values
+* Intersect
+* Simplify
+* Symmetric Difference
+* Within
 
 The code in this repo is also intended to demonstrate how one could utilize the OGR vector library within GDAL 
 for performing basic geoprocessing tasks.
