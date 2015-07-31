@@ -30,7 +30,7 @@ Installation
 
 To install Morps, clone this repository or download the latest build from the [Python Package Index](https://pypi.python.org/pypi/Morps/0.1.4). Unzip the file and open the terminal (or Windows Command Shell) and cd into the directory. Type the following command to install:
 
-    python setup.py install
+    pip install .
 
 If it installs with no errors, start the Python shell and attempt to import morps
 
