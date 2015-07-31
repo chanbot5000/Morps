@@ -2,14 +2,27 @@
 
 Used to created a buffer for any point, line, or polygon file. Currently no attribute information is carried over into the output file (working on it!).
 
-#### Creation
+**Creation**
 buffer(*Input File*, *Output File*, *Buffer Distance*, *File Type*)
 
-#### Arguments
+**Arguments**
 
 Argument | Type | Description
 --- | --- | ---
 input file | string | File to be buffered. Supported types are .shp, .geojson, and .kml
 output file | string | File containing results of the buffer geoprocess. Will be the same output file type as input file
-buffer distance | string | Size of buffer. Units currently calculated as degrees, sorry!
+buffer distance | int | Size of buffer. Units currently calculated as degrees, sorry!
 file type | string | *Optional:* specify type of file. Currently accepts *shp*,*json*, and *kml* as string arguments. Defaults to *shp* if no argument is passed. 
+
+**Code Sample**
+    
+    import morps
+
+    #define input variables
+	cities = "data/cities.shp"
+	cities_buffered = "data/cities_buffered.shp"
+	buffer_distance = 500
+	format = 'shp'
+
+	#execute buffer operation
+	morps.buffer(cities,cities_buffered,buffer_distance,format)

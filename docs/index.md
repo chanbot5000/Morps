@@ -15,14 +15,14 @@ to start the python shell and begin using morps
 
     cities = "data/cities.shp"
 	cities_buffered = "data/cities_buffered.shp"
-	unit = 'miles'
+	buffer_distance = 500
 	format = 'shp'
 
-	morps.buffer(cities,cities_buffered,500,unit,format)
+	morps.buffer(cities,cities_buffered,500,buffer_distance,format)
 
 or even simpler
 
-	morps.buffer("data/cities.shp","data/cities_buffered.shp","miles","shp")
+	morps.buffer("data/cities.shp","data/cities_buffered.shp",500,"shp")
 
 Installation
 ========
