@@ -12,24 +12,22 @@ driverList = {"shp":"ESRI Shapefile","json":"GeoJSON","kml":"KML"}
 
 def unitConvert(un,deg):
     if un=="km":
-        print deg, un,"="
         deg=deg/111.325
         return deg
     elif un=="mi":
-        print deg, un,"="
         deg=deg/111.325
         deg=deg/.621371
         return deg
     elif un=="m":
-        print deg, un,"="
         deg=deg/111.325
         deg=deg/1000
         return deg
     elif un=="ft":
-        print deg, un,"="
         deg=deg/111.325
         deg=deg/.621371
         deg=deg/5280
+        return deg
+    elif un=="deg":
         return deg
     else:
         print "Inocorrect Units - distance will be in 'degrees'"
