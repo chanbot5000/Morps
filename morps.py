@@ -8,22 +8,32 @@ import sys, subprocess, os
 driverList = {"shp":"ESRI Shapefile","json":"GeoJSON","kml":"KML"}
 
 ### TO DO:
-### Create unit converter function
-### Create feature count function
 ### Retain attribute information when creating new files
-def tested():
-    return "this is a new test"
 
-
-def unitConverter():
-
-    #convert units from input coordinate systems into user specified units
-    #such as Miles, Feet, Degrees, etc
-    #this function is needed so the operations are actually useful
-    return "unit conversion will occur someday"
-    #this will strengthen the buffer & distance function
-
-    #pass
+def unitConvert(un,deg):
+    if un=="km":
+        print deg, un,"="
+        deg=deg/111.325
+        return deg
+    elif un=="mi":
+        print deg, un,"="
+        deg=deg/111.325
+        deg=deg/.621371
+        return deg
+    elif un=="m":
+        print deg, un,"="
+        deg=deg/111.325
+        deg=deg/1000
+        return deg
+    elif un=="ft":
+        print deg, un,"="
+        deg=deg/111.325
+        deg=deg/.621371
+        deg=deg/5280
+        return deg
+    else:
+        print "Inocorrect Units - distance will be in 'degrees'"
+        return deg
 
 def featureCount(inputFile,fileType="shp"):
 
@@ -40,7 +50,9 @@ def featureCount(inputFile,fileType="shp"):
 ### to create a buffer, OutFileName, which is the output file name, buf,
 ### which is specifying the size of the buffer, and fileType, which should be
 ### the type of the file being processed.
-def buffer(InputFileName,OutFileName,buf,fileType="shp"):
+def buffer(InputFileName,OutFileName,buf,units,fileType="shp"):
+
+    buf = unitConvert(units,buf)
 
     #get fields from input file
     inputFields = getFields(InputFileName,fileType)
