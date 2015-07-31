@@ -28,6 +28,7 @@ file type | string | *Optional:*  specify type of file. Currently accepts *shp*,
 
 	morps.buffer(cities,cities_buffered,buffer_distance,units,format)
 
+---
 
 ## Centroid
 
