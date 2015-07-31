@@ -172,7 +172,7 @@ def centroid(inputFile,outFile,fileType="shp"):
     inputDS.Destroy()
     outputDS.Destroy()
 
-### This function checks two features in a file to see if one contains another.
+### This function checks two feature geometries in a file to see if one contains another.
 ### It takes 4 arguments, f1 for the first file, fid1 for the objectID of the
 ### first file's feature, f2 for the second file, fid2 for the objectID of the
 ### second file's feature. Returns whether the containment is True or False.

@@ -27,3 +27,30 @@ file type | string | *Optional:*  specify type of file. Currently accepts *shp*,
 	format = 'shp'
 
 	morps.buffer(cities,cities_buffered,buffer_distance,units,format)
+
+
+## Centroid
+
+Creates a new file containing the centroids of any line or polygon file. Currently no attribute information is carried over into the output file (working on it!).
+
+**Creation**
+
+    centroid(input file, output file, file type)
+
+**Arguments**
+
+Argument | Type | Description
+--- | --- | ---
+input file | string | File used to generate centroids. Supported types are .shp, .geojson, and .kml
+output file | string | File containing results of the centroid process. Will be the same output file type as input file
+file type | string | *Optional:*  specify type of file. Currently accepts *shp*,*json*, and *kml* as string arguments. Defaults to *shp* if no argument is passed. 
+
+**Code Sample**
+    
+    import morps
+
+	parks = "data/parks.shp"
+	park_centroids = "data/park_centroids.shp"
+	format = 'shp'
+
+	morps.centroid(parks,park_centroids,format)
