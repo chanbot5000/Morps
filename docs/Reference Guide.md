@@ -13,7 +13,7 @@ Argument | Type | Description
 input file | string | File to be buffered. Supported types are .shp, .geojson, and .kml
 output file | string | File containing results of the buffer geoprocess. Will be the same output file type as input file
 buffer distance | int | Size of buffer. Units currently calculated as degrees, sorry!
-file type | string | *Optional:* specify type of file. Currently accepts *shp*,*json*, and *kml* as string arguments. Defaults to *shp* if no argument is passed. 
+file type | string | *Optional:*  specify type of file. Currently accepts *shp*,*json*, and *kml* as string arguments. Defaults to *shp* if no argument is passed. 
 
 **Code Sample**
     
