@@ -4,7 +4,7 @@ Used to create a buffer for any point, line, or polygon file. Currently no attri
 
 **Creation**
 
-    buffer(*Input File*, *Output File*, *Buffer Distance*, *File Type*)
+    buffer(Input File, Output File, Buffer Distance, File Type)
 
 **Arguments**
 
