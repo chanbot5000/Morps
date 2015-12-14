@@ -22,7 +22,7 @@ to start the python shell and begin using morps
 
 or even simpler
 
-	morps.buffer("data/cities.shp","data/cities_buffered.shp","miles","shp")
+	morps.buffer("data/cities.shp","data/cities_buffered.shp",500,"miles","shp")
 
 Installation
 ========
