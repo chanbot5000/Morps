@@ -74,7 +74,7 @@ def difference(f1,f2):
                 newFeature2 = ogr.Feature(newLayerDef)
                 newFeature2.SetGeometry(geom2)
                 newFeature2.SetFID(featureID)
-                newLayer.CreateFeature(newfeature2)
+                newLayer.CreateFeature(newFeature2)
                 featureID += 1
             
                 newFeature1.Destroy()
